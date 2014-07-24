@@ -1,15 +1,31 @@
 /* global sharing */
 var nouns = [],
-    verbs = [];
+    verbs = [],
+    stuff = [
+      'yes',
+      'no',
+      'never',
+      'the pain',
+      'you\'ll never understand',
+      'my mind'
+    ];
 
 Array.prototype.pick = function() {
   return this[Math.floor(Math.random()*this.length)];
 };
 
 function generate(nounPlural, verb) {
-  nounPlural = nounPlural || nouns.pick().singularize();
-  verb = verb || verbs.pick();
-  var generatedText = 'I am the boy with the ' + verb + '-' + nounPlural + ' eyes';
+  var generatedText = '';
+  for (var i=0;i<16;i++) {
+    nounPlural = nouns.pick().singularize();
+    verb = verbs.pick();
+    generatedText += 'i am the boy with the ' + verb + '-' + nounPlural + ' eyes<br>';
+    var thing = stuff.pick();
+
+  for (var j=0;j<6;j++) {
+    if (Math.random() < 0.1) generatedText += thing + '<br>';
+  }
+  }
   $('#content').html(generatedText);
 }
 
@@ -21,7 +37,7 @@ function getWords(suppressGenerate) {
       dataType:'json'
     }),
     $.ajax({
-      url: 'http://api.wordnik.com//v4/words.json/randomWords?limit=1000&excludePartOfSpeech=adjective&hasDictionaryDef=true&includePartOfSpeech=verb-transitive&minCorpusCount=1000&api_key='+key.API_KEY,
+      url: 'http://api.wordnik.com/v4/words.json/randomWords?limit=1000&excludePartOfSpeech=adjective&hasDictionaryDef=true&includePartOfSpeech=verb-transitive&minCorpusCount=1000&api_key='+key.API_KEY,
       async: false,
       dataType:'json'
     })
